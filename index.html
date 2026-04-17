@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROXIMA Salon – Vallabh Vidyanagar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rose: #c4867a;
+      --rose-light: #e8c5be;
+      --rose-dark: #7a4a42;
+      --blush: #f5ede9;
+      --cream: #fdf9f7;
+      --dark: #1a1210;
+      --mid: #2e1e1a;
+      --text: #3d2820;
+      --muted: #9a7b74;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      body { cursor: none; }
+    }
+
+    /* CUSTOM CURSOR - desktop only */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--rose);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      display: none;
+    }
+    .cursor-ring {
+      width: 32px; height: 32px;
+      border: 1px solid rgba(196,134,122,0.5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.22s ease;
+      display: none;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .cursor, .cursor-ring { display: block; }
+    }
+
+    /* NOISE */
+    body::before {
+      content: '';
+      position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: 0.3;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 500;
+      padding: 24px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(253,249,247,0.95), transparent);
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      padding: 14px 60px;
+      background: rgba(253,249,247,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(196,134,122,0.2);
+      box-shadow: 0 2px 30px rgba(196,134,122,0.08);
+    }
+    .nav-logo {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.15em;
+      color: var(--rose-dark);
+      text-transform: uppercase;
+    }
+    .nav-logo span { color: var(--rose); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--rose);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--rose); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      background: var(--rose);
+      color: white !important;
+      padding: 10px 22px !important;
+      border-radius: 2px;
+      letter-spacing: 0.1em !important;
+      transition: background 0.3s ease !important;
+    }
+    .nav-cta:hover { background: var(--rose-dark) !important; color: white !important; }
+    .nav-cta::after { display: none !important; }
+
+    /* HERO */
+    #hero {
+      height: 100vh;
+      min-height: -webkit-fill-available;
+      min-height: 100svh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+      background: linear-gradient(135deg, #fdf9f7 0%, #f5ede9 40%, #edddd7 100%);
+    }
+    .hero-circles {
+      position: absolute; top: 0; right: 0; bottom: 0; left: 0; overflow: hidden;
+    }
+    .hero-circles span {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(196,134,122,0.15);
+      animation: expandRing 8s ease-in-out infinite;
+    }
+    .hero-circles span:nth-child(1) { width: 300px; height: 300px; top: 10%; left: -5%; animation-delay: 0s; }
+    .hero-circles span:nth-child(2) { width: 500px; height: 500px; top: -10%; right: -8%; animation-delay: 1.5s; }
+    .hero-circles span:nth-child(3) { width: 200px; height: 200px; bottom: 15%; right: 10%; animation-delay: 3s; }
+    .hero-circles span:nth-child(4) { width: 400px; height: 400px; bottom: -5%; left: 20%; animation-delay: 4.5s; }
+
+    @keyframes expandRing {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .hero-img-frame {
+      position: absolute;
+      right: 0; top: 0; bottom: 0;
+      width: 48%;
+      overflow: hidden;
+      -webkit-clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%);
+      clip-path: polygon(8% 0%, 100% 0%, 100% 100%, 0% 100%);
+    }
+    .hero-img-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.88) saturate(1.1);
+    }
+    .hero-img-overlay {
+      position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+      background: linear-gradient(to right, var(--cream) 0%, transparent 30%);
+    }
+
+    .hero-content {
+      position: relative; z-index: 10;
+      max-width: 580px;
+      padding: 0 60px;
+      animation: heroIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes heroIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 36px; height: 1px;
+      background: var(--rose);
+      display: inline-block;
+    }
+    .hero-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      line-height: 0.95;
+      color: var(--dark);
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--rose);
+    }
+    .hero-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 420px;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--rose);
+      color: white;
+      padding: 14px 32px;
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(196,134,122,0.35);
+    }
+    .btn-primary:hover {
+      background: var(--rose-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(196,134,122,0.45);
+    }
+    .btn-outline {
+      border: 1px solid var(--rose);
+      color: var(--rose);
+      padding: 13px 32px;
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .btn-outline:hover {
+      background: var(--rose);
+      color: white;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 40px; left: 60px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-scroll-line {
+      width: 40px; height: 1px;
+      background: var(--muted);
+      position: relative; overflow: hidden;
+    }
+    .hero-scroll-line::after {
+      content: '';
+      position: absolute; left: -100%; top: 0;
+      width: 100%; height: 100%;
+      background: var(--rose);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    /* REVEAL */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: all 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+
+    /* SECTION COMMON */
+    section {
+      padding: 100px 60px;
+    }
+    .section-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--rose);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .rose-divider {
+      width: 40px; height: 1px;
+      background: var(--rose);
+      margin: 0 auto 20px;
+    }
+    .section-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      text-align: center;
+      color: var(--dark);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .section-title em { font-style: italic; color: var(--rose); }
+
+    /* STATS STRIP */
+    #stats {
+      background: var(--dark);
+      padding: 60px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 3rem;
+      color: var(--rose-light);
+      display: block;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* SERVICES */
+    #services {
+      background: var(--cream);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 60px;
+    }
+    .service-card {
+      background: white;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      cursor: default;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; left: 0; bottom: 0;
+      width: 100%; height: 2px;
+      background: var(--rose);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(196,134,122,0.12); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .service-name {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.3rem;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    .service-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .service-items {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .service-items li {
+      font-size: 0.75rem;
+      color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .service-items li::before {
+      content: '';
+      width: 5px; height: 1px;
+      background: var(--rose);
+    }
+
+    /* GALLERY */
+    #gallery {
+      background: var(--blush);
+      padding: 100px 0;
+    }
+    #gallery .section-eyebrow,
+    #gallery .rose-divider,
+    #gallery .section-title,
+    #gallery p { padding: 0 60px; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 300px 300px;
+      gap: 3px;
+      margin-top: 50px;
+    }
+    .gallery-item {
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-item:first-child { grid-row: 1 / 3; }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+      filter: brightness(0.92) saturate(1.05);
+    }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-overlay {
+      position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+      background: linear-gradient(to top, rgba(196,134,122,0.6) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-label {
+      position: absolute; bottom: 20px; left: 20px;
+      color: white;
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1rem;
+      font-style: italic;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.4s ease;
+    }
+    .gallery-item:hover .gallery-label { opacity: 1; transform: translateY(0); }
+
+    /* ABOUT */
+    #about {
+      background: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-img-wrap {
+      position: relative;
+    }
+    .about-img-main {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      display: block;
+    }
+    .about-img-accent {
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 200px; height: 200px;
+      object-fit: cover;
+      border: 6px solid var(--cream);
+    }
+    .about-tag {
+      position: absolute; top: 30px; left: -20px;
+      background: var(--rose);
+      color: white;
+      padding: 10px 20px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .about-content .section-eyebrow,
+    .about-content .rose-divider,
+    .about-content .section-title { text-align: left; margin-left: 0; }
+    .about-text {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .about-features {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin: 30px 0;
+    }
+    .about-feat {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .feat-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rose);
+      margin-top: 6px; flex-shrink: 0;
+    }
+    .feat-text {
+      font-size: 0.78rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* TESTIMONIALS */
+    #testimonials {
+      background: var(--dark);
+      text-align: center;
+    }
+    #testimonials .section-title { color: var(--blush); }
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 60px;
+    }
+    .testi-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(196,134,122,0.15);
+      padding: 36px 28px;
+      text-align: left;
+      transition: border-color 0.3s;
+    }
+    .testi-card:hover { border-color: rgba(196,134,122,0.5); }
+    .testi-stars {
+      color: var(--rose-light);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+    .testi-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: rgba(245,237,233,0.8);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .testi-name {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose-light);
+      font-weight: 500;
+    }
+    .testi-role {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.3);
+      margin-top: 2px;
+    }
+
+    /* INFO */
+    #info {
+      background: white;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 60px;
+    }
+    .info-card {
+      padding: 40px;
+      background: var(--blush);
+      border-left: 3px solid var(--rose);
+    }
+    .info-card-title {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.1rem;
+      color: var(--dark);
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .info-card-title span { font-size: 1.4rem; }
+    .hours-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .hours-list li {
+      display: flex; justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--text);
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(196,134,122,0.12);
+    }
+    .hours-list li:last-child { border-bottom: none; }
+    .hours-list .day { color: var(--muted); }
+    .open-badge {
+      display: inline-block;
+      background: #d4edda;
+      color: #155724;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-top: 16px;
+      font-weight: 600;
+    }
+    .contact-info { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+    .contact-info li {
+      display: flex; align-items: flex-start; gap: 14px;
+      font-size: 0.85rem;
+    }
+    .ci-icon {
+      width: 38px; height: 38px;
+      background: var(--rose);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .ci-label { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .ci-value { color: var(--dark); font-weight: 500; }
+    .ci-value a { color: var(--rose); text-decoration: none; }
+    .ci-value a:hover { text-decoration: underline; }
+
+    .map-frame {
+      margin-top: 50px;
+      width: 100%; height: 350px;
+      border: none; display: block;
+    }
+
+    /* CONTACT / CTA */
+    #contact {
+      background: linear-gradient(135deg, var(--rose-dark) 0%, #5a2e28 100%);
+      text-align: center;
+      padding: 100px 60px;
+    }
+    #contact .section-eyebrow { color: var(--rose-light); }
+    #contact .rose-divider { background: var(--rose-light); }
+    #contact .section-title { color: white; }
+    #contact p { color: rgba(255,255,255,0.6); font-size: 0.85rem; max-width: 480px; margin: 0 auto 50px; line-height: 1.8; }
+    .contact-btns {
+      display: flex; flex-wrap: wrap;
+      gap: 16px; justify-content: center;
+    }
+    .cbtn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .cbtn svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .cbtn-whatsapp { background: #25D366; color: white; }
+    .cbtn-whatsapp:hover { background: #1da050; transform: translateY(-2px); }
+    .cbtn-instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; }
+    .cbtn-instagram:hover { transform: translateY(-2px); opacity: 0.9; }
+    .cbtn-phone { background: white; color: var(--rose-dark); }
+    .cbtn-phone:hover { background: var(--blush); transform: translateY(-2px); }
+    .cbtn-maps { background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.3); }
+    .cbtn-maps:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark);
+      padding: 50px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Bodoni Moda', serif;
+      font-size: 1.2rem;
+      color: var(--rose-light);
+      letter-spacing: 0.1em;
+    }
+    .footer-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.3);
+    }
+    .footer-copy {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+    }
+
+    /* MOBILE NAV */
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 600; }
+    .nav-toggle span { width: 24px; height: 1.5px; background: var(--rose-dark); transition: all 0.3s; }
+
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      nav.scrolled { padding: 14px 24px; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+        background: var(--cream);
+        align-items: center; justify-content: center;
+        gap: 28px;
+      }
+      .nav-links.open a { font-size: 1.1rem; letter-spacing: 0.1em; }
+
+      section { padding: 70px 24px; }
+      #hero { flex-direction: column; align-items: flex-start; justify-content: center; }
+      .hero-content { padding: 0 24px; max-width: 100%; }
+      .hero-img-frame { display: none; }
+      .hero-title { font-size: clamp(2.8rem, 10vw, 4rem); }
+      #stats { grid-template-columns: repeat(2, 1fr); padding: 40px 24px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .gallery-item:first-child { grid-row: auto; }
+      #about { grid-template-columns: 1fr; gap: 40px; }
+      .about-img-accent { display: none; }
+      .about-features { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; gap: 24px; }
+      footer { flex-direction: column; gap: 16px; text-align: center; padding: 40px 24px; }
+      #gallery p, #gallery .section-eyebrow, #gallery .rose-divider, #gallery .section-title { padding: 0 24px; }
+      .hero-scroll { left: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="nav-logo">PROXIM<span>A</span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#info">Visit</a></li>
+      <li><a href="https://wa.me/917016892472?text=Hello!%20I'd%20like%20to%20book%20an%20appointment." target="_blank" class="nav-cta">Book Now</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-circles">
+      <span></span><span></span><span></span><span></span>
+    </div>
+    <div class="hero-img-frame">
+      <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&q=85&fit=crop" alt="Salon Interior">
+      <div class="hero-img-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Vallabh Vidyanagar, Anand</div>
+      <h1 class="hero-title">Where Beauty<br><em>Finds You</em></h1>
+      <p class="hero-sub">Premium hair, skin & nail artistry crafted with precision. Experience transformations that make you feel utterly yourself.</p>
+      <div class="hero-btns">
+        <a href="https://wa.me/917016892472?text=Hello!%20I'd%20like%20to%20book%20an%20appointment." target="_blank" class="btn-primary">Book Appointment</a>
+        <a href="#gallery" class="btn-outline">View Gallery</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div id="stats">
+    <div class="stat-item reveal">
+      <span class="stat-num">500+</span>
+      <div class="stat-label">Happy Clients</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num">5+</span>
+      <div class="stat-label">Years of Excellence</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num">20+</span>
+      <div class="stat-label">Services Offered</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num">4.9★</span>
+      <div class="stat-label">Average Rating</div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-eyebrow">What We Offer</div>
+    <div class="rose-divider"></div>
+    <h2 class="section-title reveal">Our <em>Services</em></h2>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <span class="service-icon">✂️</span>
+        <div class="service-name">Hair Styling</div>
+        <p class="service-desc">From precision cuts to creative styling — we craft looks that frame your personality perfectly.</p>
+        <ul class="service-items">
+          <li>Haircut & Trim</li>
+          <li>Blowout & Blowdry</li>
+          <li>Curling & Straightening</li>
+          <li>Bridal Hairstyling</li>
+        </ul>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">🎨</span>
+        <div class="service-name">Hair Colouring</div>
+        <p class="service-desc">Balayage, highlights, global colour — our colour specialists bring your dream shade to life.</p>
+        <ul class="service-items">
+          <li>Global Colour</li>
+          <li>Highlights & Lowlights</li>
+          <li>Balayage & Ombré</li>
+          <li>Toning & Gloss</li>
+        </ul>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">💆</span>
+        <div class="service-name">Hair Treatments</div>
+        <p class="service-desc">Restore, strengthen, and transform with professional-grade hair treatments.</p>
+        <ul class="service-items">
+          <li>Keratin Treatment</li>
+          <li>Deep Conditioning</li>
+          <li>Scalp Treatment</li>
+          <li>Smoothening & Rebonding</li>
+        </ul>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">💅</span>
+        <div class="service-name">Nail Art</div>
+        <p class="service-desc">Intricate nail art and quality manicures that are an extension of your personal style.</p>
+        <ul class="service-items">
+          <li>Gel Nails</li>
+          <li>Nail Extensions</li>
+          <li>Custom Nail Art</li>
+          <li>Manicure & Pedicure</li>
+        </ul>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">👰</span>
+        <div class="service-name">Bridal Makeup</div>
+        <p class="service-desc">Look your absolute best on your special day with our expert bridal beauty team.</p>
+        <ul class="service-items">
+          <li>Bridal Makeup</li>
+          <li>Pre-bridal Package</li>
+          <li>Engagement Looks</li>
+          <li>Party Makeup</li>
+        </ul>
+      </div>
+      <div class="service-card reveal">
+        <span class="service-icon">✨</span>
+        <div class="service-name">Skin & Beauty</div>
+        <p class="service-desc">Facials, threading, waxing and more — a full-service experience for your entire beauty routine.</p>
+        <ul class="service-items">
+          <li>Facials & Cleanup</li>
+          <li>Threading & Waxing</li>
+          <li>Eyebrow Shaping</li>
+          <li>Tan Removal</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="section-eyebrow">Our Work</div>
+    <div class="rose-divider"></div>
+    <h2 class="section-title reveal">Transformations at <em>Proxima</em></h2>
+    <p class="reveal" style="text-align:center;color:var(--muted);font-size:0.85rem;max-width:480px;margin:0 auto;line-height:1.8;">Each look is crafted with care, passion, and an eye for what makes you uniquely beautiful.</p>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal">
+        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=85&fit=crop" alt="Balayage Hair">
+        <div class="gallery-overlay"></div>
+        <div class="gallery-label">Balayage Transformation</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=500&q=85&fit=crop" alt="Nail Art">
+        <div class="gallery-overlay"></div>
+        <div class="gallery-label">Nail Art</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=500&q=85&fit=crop" alt="Facial Treatment">
+        <div class="gallery-overlay"></div>
+        <div class="gallery-label">Skin Treatment</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=500&q=85&fit=crop" alt="Hair Color">
+        <div class="gallery-overlay"></div>
+        <div class="gallery-label">Hair Colour</div>
+      </div>
+      <div class="gallery-item reveal">
+        <img src="https://images.unsplash.com/photo-1519415943484-9fa1873496d4?w=500&q=85&fit=crop" alt="Bridal Makeup">
+        <div class="gallery-overlay"></div>
+        <div class="gallery-label">Bridal Makeup</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-img-wrap reveal">
+      <img class="about-img-main" src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=700&q=85&fit=crop" alt="Proxima Salon">
+      <img class="about-img-accent" src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=300&q=85&fit=crop" alt="Salon Detail">
+      <div class="about-tag">Est. in Anand, Gujarat</div>
+    </div>
+    <div class="about-content">
+      <div class="section-eyebrow">Our Story</div>
+      <div class="rose-divider"></div>
+      <h2 class="section-title reveal">The Art of <em>Beautiful</em></h2>
+      <p class="about-text reveal">Proxima Salon was built on a simple belief — that everyone deserves to feel extraordinary. Nestled in the heart of Vallabh Vidyanagar, we bring together skilled stylists, premium products, and a warm, welcoming atmosphere.</p>
+      <p class="about-text reveal">Whether you're here for a quick trim, a bold colour change, or a full bridal transformation, our team pours heart into every service. We don't just do your hair — we make you feel like yourself again.</p>
+      <div class="about-features reveal">
+        <div class="about-feat"><div class="feat-dot"></div><div class="feat-text">Premium Products Only</div></div>
+        <div class="about-feat"><div class="feat-dot"></div><div class="feat-text">Experienced Stylists</div></div>
+        <div class="about-feat"><div class="feat-dot"></div><div class="feat-text">Hygiene First Always</div></div>
+        <div class="about-feat"><div class="feat-dot"></div><div class="feat-text">Personalised Consultation</div></div>
+        <div class="about-feat"><div class="feat-dot"></div><div class="feat-text">Bridal Packages</div></div>
+        <div class="about-feat"><div class="feat-dot"></div><div class="feat-text">Walk-ins Welcome</div></div>
+      </div>
+      <a href="https://wa.me/917016892472?text=Hello!%20I'd%20like%20to%20know%20more%20about%20Proxima%20Salon." target="_blank" class="btn-primary reveal">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="section-eyebrow">Client Love</div>
+    <div class="rose-divider"></div>
+    <h2 class="section-title reveal">What Our Clients <em>Say</em></h2>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Absolutely love my balayage! The stylist listened to exactly what I wanted and the result was even better than the reference photo I brought. Will definitely be back."</p>
+        <div class="testi-name">Priya Mehta</div>
+        <div class="testi-role">Regular Client</div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Got my bridal makeup and hair done at Proxima. The team was so professional and made me feel so beautiful on my special day. Could not have asked for better."</p>
+        <div class="testi-name">Sneha Patel</div>
+        <div class="testi-role">Bride</div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Best nail art in Anand, hands down! I showed them a reference and they replicated it perfectly with their own creative touch. The salon is clean and everyone is so friendly."</p>
+        <div class="testi-name">Ritu Shah</div>
+        <div class="testi-role">Loyal Customer</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFO -->
+  <section id="info">
+    <div class="section-eyebrow">Find Us</div>
+    <div class="rose-divider"></div>
+    <h2 class="section-title reveal">Visit <em>Proxima</em></h2>
+    <div class="info-grid">
+      <div class="info-card reveal">
+        <div class="info-card-title"><span>🕐</span> Working Hours</div>
+        <ul class="hours-list">
+          <li><span class="day">Monday</span><span>10:00 AM – 8:00 PM</span></li>
+          <li><span class="day">Tuesday</span><span>10:00 AM – 8:00 PM</span></li>
+          <li><span class="day">Wednesday</span><span>10:00 AM – 8:00 PM</span></li>
+          <li><span class="day">Thursday</span><span>10:00 AM – 8:00 PM</span></li>
+          <li><span class="day">Friday</span><span>10:00 AM – 8:00 PM</span></li>
+          <li><span class="day">Saturday</span><span>10:00 AM – 8:00 PM</span></li>
+          <li><span class="day">Sunday</span><span>10:00 AM – 7:00 PM</span></li>
+        </ul>
+        <div class="open-badge">✓ Open Today</div>
+      </div>
+      <div class="info-card reveal">
+        <div class="info-card-title"><span>📍</span> Contact & Location</div>
+        <ul class="contact-info">
+          <li>
+            <div class="ci-icon">📞</div>
+            <div>
+              <div class="ci-label">Phone</div>
+              <div class="ci-value"><a href="tel:07016892472">07016892472</a></div>
+            </div>
+          </li>
+          <li>
+            <div class="ci-icon">📍</div>
+            <div>
+              <div class="ci-label">Address</div>
+              <div class="ci-value">F 3, Vallabh Vidyanagar,<br>Anand, Gujarat 388120</div>
+            </div>
+          </li>
+          <li>
+            <div class="ci-icon">💬</div>
+            <div>
+              <div class="ci-label">WhatsApp</div>
+              <div class="ci-value"><a href="https://wa.me/917016892472" target="_blank">Chat with us on WhatsApp</a></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <iframe class="map-frame reveal"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.5!2d72.9240!3d22.5554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e4f0000000001%3A0x0!2sVallabh+Vidyanagar%2C+Anand%2C+Gujarat+388120!5e0!3m2!1sen!2sin!4v1712000000000!5m2!1sen!2sin"
+      allowfullscreen loading="lazy">
+    </iframe>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section id="contact">
+    <div class="section-eyebrow">Book Your Visit</div>
+    <div class="rose-divider"></div>
+    <h2 class="section-title reveal">Ready for Your <em>Transformation?</em></h2>
+    <p class="reveal">Reach out through your preferred channel — we're just a tap away. Walk-ins welcome, appointments recommended.</p>
+    <div class="contact-btns reveal">
+      <a href="https://wa.me/917016892472?text=Hello!%20I'd%20like%20to%20book%20an%20appointment%20at%20Proxima%20Salon." target="_blank" class="cbtn cbtn-whatsapp">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="tel:07016892472" class="cbtn cbtn-phone">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        Call Now
+      </a>
+      <a href="https://www.instagram.com/" target="_blank" class="cbtn cbtn-instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        Instagram
+      </a>
+      <a href="https://maps.google.com/?q=F+3,+Vallabh+Vidyanagar,+Anand,+Gujarat+388120" target="_blank" class="cbtn cbtn-maps">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+        Get Directions
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">PROXIMA Salon</div>
+    <div class="footer-tagline">"Where beauty finds you."</div>
+    <div class="footer-copy">© 2025 Proxima Salon · Anand, Gujarat</div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      cursor.style.left = mouseX - 5 + 'px';
+      cursor.style.top = mouseY - 5 + 'px';
+    });
+    function animateRing() {
+      rx += (mouseX - rx) * 0.12; ry += (mouseY - ry) * 0.12;
+      cursorRing.style.left = rx - 16 + 'px';
+      cursorRing.style.top = ry - 16 + 'px';
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2)'; cursorRing.style.transform = 'scale(1.5)'; });
+      el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; cursorRing.style.transform = 'scale(1)'; });
+    });
+
+    // NAV SCROLL
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // MOBILE NAV
+    const toggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // SCROLL REVEAL
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('revealed'), i * 70);
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ACTIVE NAV
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
+      links.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--rose)' : ''; });
+    });
+  </script>
+</body>
+</html>
